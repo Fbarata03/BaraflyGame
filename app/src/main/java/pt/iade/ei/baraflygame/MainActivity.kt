@@ -5,12 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import pt.iade.ei.baraflygame.data.db.AppDatabase
+import pt.iade.ei.baraflygame.data.repository.UserRepository
+import pt.iade.ei.baraflygame.navigation.AppNavGraph
+import pt.iade.ei.baraflygame.ui.login.LoginViewModel
+import pt.iade.ei.baraflygame.ui.register.RegisterViewModel
 import pt.iade.ei.baraflygame.ui.theme.BaraflyGameTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +23,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BaraflyGameTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                val db = remember { AppDatabase.getInstance(this) }
+                val repo = remember { UserRepository(db.userDao()) }
+                val loginVM = remember { LoginViewModel(repo) }
+                val registerVM = remember { RegisterViewModel(repo) }
+                val navController = rememberNavController()
+
+                Scaffold(modifier = Modifier.fillMaxSize()) {
+                    AppNavGraph(
+                        navController = navController,
+                        loginViewModel = loginVM,
+                        registerViewModel = registerVM
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BaraflyGameTheme {
-        Greeting("Android")
     }
 }
