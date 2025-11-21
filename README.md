@@ -12,7 +12,7 @@ A aplicação permite que o utilizador:
 
 - Navegue entre dois jogos: **Fórmula 1** e **MotoGP**  
 - Veja detalhes do jogo selecionado  
-- Explore itens compráveis (7 por jogo)  
+- Explore itens compráveis (3 por jogo)  
 - Abra uma **ModalBottomSheet** ao tentar comprar um item  
 - Confirme a compra  
 - Veja um **Toast obrigatório** no formato:
